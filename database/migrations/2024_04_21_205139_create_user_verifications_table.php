@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users_verification', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->foreignId('user_id');
+            $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('otp');
             $table->boolean('is_active');
             $table->timestamps();
