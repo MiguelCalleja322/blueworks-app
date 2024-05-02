@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_identifications', function (Blueprint $table) {
+        Schema::create('skill_requirements', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('type');
-            $table->string('id_number');
-            $table->string('issued_date');
-            $table->string('url_reference');
+            $table->unsignedBigInteger('skill_category_id');
+            $table->foreign('skill_sub_category_id')->references('id')->on('skill_sub_categories')->onDelete('cascade');
+            $table->string('name');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_identifications');
+        Schema::dropIfExists('skill_requirements');
     }
 };

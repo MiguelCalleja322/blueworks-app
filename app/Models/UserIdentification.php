@@ -11,11 +11,12 @@ class UserIdentification extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected  $fillable = [
+    protected $fillable = [
         'user_id',
-        'identification_type',
-        'identification_number',
-        'identification_issued_date',
+        'type',
+        'id_number',
+        'issued_date',
+        'url_reference',
     ];
 
     public function user(): BelongsTo {

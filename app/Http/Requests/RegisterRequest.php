@@ -23,9 +23,10 @@ class RegisterRequest extends FormRequest
             'mobile' => 'required|string|max:255|unique:users,mobile',
             'birthdate' => 'required|date_format:Y-m-d',
             'role_id' => 'required|exists:roles,id',
-            'identification_type' => 'required|string',
+            'type' => 'required|string',
             'identification_number' => 'required|string',
             'identification_issued_date' => 'required|string',
+            'url_reference' => 'required|string',
         ];
     }
 
@@ -39,7 +40,7 @@ class RegisterRequest extends FormRequest
             'username.required' => 'Username is required.',
             'password.required' => 'Password is required.',
             'gender.required' => 'Gender is required.',
-            'identification_type.required' => 'ID is required.',
+            'type.required' => 'ID is required.',
             'identification_number.required' => 'ID Number is required.',
             'identification_issued_date.required' => 'ID issued date is required.',
             

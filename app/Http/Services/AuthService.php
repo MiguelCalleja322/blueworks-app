@@ -38,13 +38,6 @@ class UserService
             'gender' => $request->input('gender'),
         ]);
 
-        UserIdentification::create([
-            'user_id' => $user->id,
-            'identification_type' => $request->input('identification_type'),
-            'identification_number' => $request->input('identification_number'),
-            'identification_issued_date' => $request->input('identification_issued_date'),
-        ]);
-
         UserRole::create([
             'user_id' => $user->id,
             'role_id' => $request->input('role_id')
@@ -94,13 +87,13 @@ class UserService
     {
         $authUser = Auth::user();
 
-        // $otp = random_int(100000, 999999);
+        $otp = random_int(100000, 999999);
 
         UserVerification::where('user_id', $authUser->id)->update(['is_active' => false]);
 
         $userVerification = UserVerification::create([
             'user_id' => $authUser->id,
-            'otp' => 111111,
+            'otp' => $otp,
             'is_active' => true,
         ]);
 
@@ -114,13 +107,13 @@ class UserService
         // Notification::send($authUser, new SMSNotification($message));
 
         return response()->json([
-            'message' => $message,
+            'message' => 'Your OTP is underway. Please check your inbox.',
         ]);
 
         // Mail::to($authUser->email)->queue(new SignupVerificationMail($authUser, $userVerification));
     }
 
-    public static function verify(Request $request) {
+    public static function verifyAccount(Request $request) {
         $authUser = Auth::user();
         $otp = $request->input('otp') ?? null;
 
@@ -134,7 +127,7 @@ class UserService
             if (! $userVerify) {
                 return response()->json([
                     'error_otp' => 'OTP does not exists',
-                ], 403);
+                ], 404);
             }
 
             $authUser->update(['is_verified' => true]);
@@ -143,12 +136,31 @@ class UserService
         } else {
             return response()->json([
                 'error_otp' => 'Missing OTP',
-            ], 403);
+            ], 404);
         }
 
         return response()->json([
             'is_verified' => $authUser->is_verified,
             'message' => 'Account is now verified.',
         ], 200);
+    }
+
+    public static function verifyUser(Request $request) {
+
+        $authUser = Auth::user();
+
+        //GCP code here
+
+        UserIdentification::updateOrCreate([
+            'user_id' => $authUser->id,
+            'type' => $request->input('type'),
+            'id_number' => $request->input('id_number'),
+            'issued_date' => $request->input('issued_date'),
+            // 'url_reference' => $request->input('url_reference'),
+        ]);
+
+        return response()->json([
+            'message' => 'User Verification is underway. Please wait 24 to 48 hours'
+        ]);
     }
 }
