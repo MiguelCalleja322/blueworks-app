@@ -19,11 +19,3 @@
     RewriteCond %{REQUEST_URI} !^public
     RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>
-
-<IfModule mod_rewrite.c>
-    RewriteEngine on
-    RewriteCond %{HTTP_HOST} ^blueworks.app$ [NC,OR]
-    RewriteCond %{HTTP_HOST} ^www.blueworks.app$
-    RewriteCond %{REQUEST_URI} !production/
-    RewriteRule (.*) /production/$1 [L]
-</IfModule>
