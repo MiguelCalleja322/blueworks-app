@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('skill_requirements', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('skill_category_id');
+            $table->unsignedBigInteger('skill_sub_category_id');
             $table->foreign('skill_sub_category_id')->references('id')->on('skill_sub_categories')->onDelete('cascade');
             $table->string('name');
             $table->timestamps();
